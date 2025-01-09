@@ -1,41 +1,43 @@
-import { useState, useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  useEffect(()=>{
-    (async()=>{
-      const res= await axios.get('https://randomuser.me/api/')
-      console.log(res);
-    })()
-  }, [])
+  const [account,setAccount]=useState({
+    username:'請輸入信箱',
+    password:'請輸入密碼',
+  })
+
+  function updateEnter(e){
+
+    setAccount({
+      ...account,
+      [e.target.name]:e.target.value,
+    })
+  }
+
+  function login(e){
+    e.preventDefault();
+    axios.post(`${import.meta.env.VITE_BASE_URL}/v2/admin/signin`,account)
+    .then((res) => console.log(res.message))
+    .catch((err) => console.log(err))
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h2 className='mb-5 display-2 fw-bold'>登入</h2>
+      <form>
+        <div className="form-group mb-3">
+          <label htmlFor="email" className='pb-2'>Email</label>
+          <input type="email" name='username' className="form-control form-control-lg" id="email" onChange={updateEnter}/>
+        </div>
+        <div className="form-group mb-3">
+          <label htmlFor="password" className='pb-2'>密碼</label>
+          <input type="password" name='password' className="form-control form-control-lg" id="password" onChange={updateEnter}/>
+        </div>
+          <button onClick={login} type="submit" className="btn btn-primary">登入</button>
+      </form>
     </>
   )
 }
