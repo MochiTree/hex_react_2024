@@ -4,8 +4,11 @@ import './App.css'
 
 function App() {
   const [productDetail, setDetail] = useState(null);
-  const [products, setProducts] = useState([])
-
+  const [products, setProducts] = useState([]);
+  const [isBackEnd, setIsBackEnd] = useState({
+    display:'none',
+    status:false,
+  });
   const [isAdmin, setIsAdmin]=useState(false);
 
   const [account,setAccount]=useState({
@@ -59,10 +62,29 @@ function App() {
       setIsAdmin(false)
     }
   }
+  async function backEnd(){
+    try{
+      await axios.post(`${import.meta.env.VITE_BASE_URL}/v2/api/user/check`);
+      if(isBackEnd.display==='block'){
+        setIsBackEnd({
+          display:'none',
+          status:!isBackEnd.status,
+        });
+      }else if(isBackEnd.display==='none') {
+        setIsBackEnd({
+          display:'block',
+          status:!isBackEnd.status,
+        });
+      }
+    } catch(err) {
+      alert(err.message)
+      setIsAdmin(false)
+    }
+  }
 
   return (
     <>
-    {isAdmin ? (<><button className='btn btn-danger mb-3' onClick={loginCheck}>檢查登入狀態</button><div className="row">
+    { isAdmin ? (<><button className='btn btn-success mb-3 me-2' onClick={backEnd}>{isBackEnd.status ? '產品頁面' : '後台頁面'}</button><button className='btn btn-danger mb-3' onClick={loginCheck}>檢查登入狀態</button><div className="row">
             <div className='col col-8'>
               <h1 className='fw-bold'>產品列表</h1>
         <table className="table">
@@ -83,6 +105,7 @@ function App() {
       <td>{item.price}</td>
       <td>{item.is_enabled}</td>
       <td><button className='btn btn-primary btn-sm' onClick={()=>setDetail(item)}>查看細節</button></td>
+      <td><button className='btn btn-primary btn-sm' style={{display:`${isBackEnd.display}`}}>編輯</button></td>
     </tr>)
     })}
   </tbody>
