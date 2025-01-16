@@ -163,10 +163,23 @@ function App() {
         }})}
         catch(err){ alert('新增失敗',err.message) }
   }
-  //點擊新增(addProduct)後 先post到api 再從api把結果撈回來渲染(getProducts)
-    async function updateProduct(){
+  async function updateProduct(){
     try {
-      await addProduct();
+      await axios.put(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/admin/product/${productContent.id}`,
+        {
+          data:{
+            ...productContent,
+            origin_price:+(productContent.origin_price),
+            price:+(productContent.price),
+            is_enabled:productContent.is_enabled ? 1 : 0,
+        }})}
+        catch(err){ alert('更新失敗',err.message) }
+  }
+  //點擊新增(addProduct)後 先post到api 再從api把結果撈回來渲染(getProducts)
+    async function reRenderProduct(){
+      const whichApi = modalMode==='edit' ? updateProduct : addProduct;
+    try {
+      await whichApi();
       getProducts();
       handleCloseProductModal();
     }catch(err){
@@ -432,7 +445,7 @@ function App() {
                     <button type="button" className="btn btn-secondary" onClick={handleCloseProductModal}>
                       取消
                     </button>
-                    <button type="button" className="btn btn-primary" onClick={updateProduct}>
+                    <button type="button" className="btn btn-primary" onClick={reRenderProduct}>
                       確認
                     </button>
                   </div>
