@@ -150,6 +150,29 @@ function App() {
     })
   }
 
+  
+   async function addProduct(){
+    try {
+      await axios.post(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/admin/product`,
+        {
+          data:{
+            ...productContent,
+            origin_price:+(productContent.origin_price),
+            price:+(productContent.price),
+            is_enabled:productContent.is_enabled ? 1 : 0,
+        }})}
+        catch(err){ alert('新增失敗',err.message) }
+  }
+  //點擊新增(addProduct)後 先post到api 再從api把結果撈回來渲染(getProducts)
+    async function updateProduct(){
+    try {
+      await addProduct();
+      getProducts();
+      handleCloseProductModal();
+    }catch(err){
+      alert('更新失敗',err.message)
+    }
+ }
   //箭頭函式寫法
   // const loginCheck = async() =>{
   //   try{
@@ -409,7 +432,7 @@ function App() {
                     <button type="button" className="btn btn-secondary" onClick={handleCloseProductModal}>
                       取消
                     </button>
-                    <button type="button" className="btn btn-primary">
+                    <button type="button" className="btn btn-primary" onClick={updateProduct}>
                       確認
                     </button>
                   </div>
