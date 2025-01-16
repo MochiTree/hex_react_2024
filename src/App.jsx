@@ -257,7 +257,11 @@ function App() {
                               )}
                             </div>
                           ))}
+                            <div className="btn-group w-100">
+                              {productContent.imagesUrl.length <5 && productContent.imagesUrl[(productContent.imagesUrl.length)-1] !=='' && <button className="btn btn-outline-primary btn-sm w-100">新增圖片</button>}
 
+                              {productContent.imagesUrl.length >1 && <button className="btn btn-outline-danger btn-sm w-100">取消圖片</button>}
+                            </div>
                         </div>
                       </div>
 
@@ -409,7 +413,7 @@ function App() {
       <th scope="col">原價</th>
       <th scope="col">售價</th>
       <th scope="col">是否啟用</th>
-      <th scope="col">查看細節</th>
+      {/* <th scope="col">查看細節</th> */}
     </tr>
   </thead>
   <tbody>
@@ -419,7 +423,7 @@ function App() {
       <td>{item.origin_price}</td>
       <td>{item.price}</td>
       <td>{item.is_enabled ? '已啟用':'未啟用'}</td>
-      <td><button className='btn btn-primary btn-sm' onClick={()=>setDetail(item)}>查看細節</button></td>
+      {/* <td><button className='btn btn-primary btn-sm' onClick={()=>setDetail(item)}>查看細節</button></td> */}
       <div className="btn-group">
       <button className='btn btn-primary btn-sm' style={{display:`${isBackEnd.display}`}} onClick={function() {
         handleOpenProductModal('edit',item);
