@@ -14,6 +14,7 @@ function App() {
   const [isAdmin, setIsAdmin]=useState(false);
   const [modalMode, setModalMode]=useState(null);
   const modalRef =useRef(null);
+  const delModalRef=useRef(null);
   // const modalRefMethod = useRef(null);
   const defaultModalState = {
     imageUrl: "",
@@ -59,8 +60,10 @@ function App() {
     // modalRefMethod.current = new Modal(modalRef.current);
     
     new Modal(modalRef.current);
-    console.log(1,modalRef.current);
-    console.log(2,Modal.getInstance(modalRef.current));
+    // console.log(1,modalRef.current);
+    // console.log(2,Modal.getInstance(modalRef.current));
+    new Modal(delModalRef.current);
+
     //從cookie抓出token，讓每次使用axios的時候把token放入header傳送
     const token = document.cookie.replace(
       /(?:(?:^|.*;\s*)loginToken\s*\=\s*([^;]*).*$)|^.*$/,
@@ -97,6 +100,15 @@ function App() {
     modalInstance.hide();
   }
   
+  function handleOpenDelProductModal() {
+    const modalInstance = Modal.getInstance(delModalRef.current);
+    modalInstance.show();
+  }
+
+  function handleCloseDelProductModal() {
+    const modalInstance = Modal.getInstance(delModalRef.current);
+    modalInstance.hide();
+  }
 
   function updateEnter(e){
 
@@ -452,6 +464,44 @@ function App() {
                 </div>
               </div>
             </div>
+              <div
+                className="modal fade"
+                ref={delModalRef}
+                id="delProductModal"
+                tabIndex="-1"
+                style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+              >
+                <div className="modal-dialog">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h1 className="modal-title fs-5">刪除產品</h1>
+                      <button
+                        type="button"
+                        className="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                        onClick={handleCloseDelProductModal}
+                      ></button>
+                    </div>
+                    <div className="modal-body">
+                      你是否要刪除 
+                      <span className="text-danger fw-bold">{productContent.title}</span>
+                    </div>
+                    <div className="modal-footer">
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={handleCloseDelProductModal}
+                      >
+                        取消
+                      </button>
+                      <button type="button" className="btn btn-danger">
+                        刪除
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             { isAdmin ? (<><button className='btn btn-success mb-3 me-2' onClick={backEnd}>{isBackEnd.status ? '產品頁面' : '後台頁面'}</button>
             {/* <button className='btn btn-danger mb-3' onClick={loginCheck}>檢查登入狀態</button> */}
             <div className="row">
@@ -479,7 +529,7 @@ function App() {
       <div className="btn-group">
       <button className='btn btn-primary btn-sm' style={{display:`${isBackEnd.display}`}} onClick={function() {
         handleOpenProductModal('edit',item);
-      }}>編輯</button><button className='btn btn-danger btn-sm' style={{display:`${isBackEnd.display}`}}>刪除</button></div>
+      }}>編輯</button><button className='btn btn-danger btn-sm' style={{display:`${isBackEnd.display}`}} onClick={handleOpenDelProductModal}>刪除</button></div>
     </tr>)
     })}
   </tbody>
