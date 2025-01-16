@@ -539,7 +539,7 @@ function App() {
       <th scope="row">{item.title}</th>
       <td>{item.origin_price}</td>
       <td>{item.price}</td>
-      <td>{item.is_enabled ? '已啟用':'未啟用'}</td>
+      <td>{item.is_enabled ? <span className='text-success'>已啟用</span>: <span>未啟用</span>}</td>
       {/* <td><button className='btn btn-primary btn-sm' onClick={()=>setDetail(item)}>查看細節</button></td> */}
       <div className="btn-group">
       <button className='btn btn-primary btn-sm' style={{display:`${isBackEnd.display}`}} onClick={function() {
