@@ -133,6 +133,22 @@ function App() {
     }
   };
 
+  function addImages() {
+    const imagesList = [...productContent.imagesUrl,''];
+    setContent({
+      ...productContent,
+      imagesUrl:imagesList,
+    })
+  }
+
+  function removeImgaes() {
+    const imagesList = [...productContent.imagesUrl];
+    imagesList.pop();
+    setContent({
+      ...productContent,
+      imagesUrl:imagesList,
+    })
+  }
 
   //箭頭函式寫法
   // const loginCheck = async() =>{
@@ -258,9 +274,9 @@ function App() {
                             </div>
                           ))}
                             <div className="btn-group w-100">
-                              {productContent.imagesUrl.length <5 && productContent.imagesUrl[(productContent.imagesUrl.length)-1] !=='' && <button className="btn btn-outline-primary btn-sm w-100">新增圖片</button>}
+                              {productContent.imagesUrl.length <5 && productContent.imagesUrl[(productContent.imagesUrl.length)-1] !=='' && <button className="btn btn-outline-primary btn-sm w-100" onClick={addImages}>新增圖片</button>}
 
-                              {productContent.imagesUrl.length >1 && <button className="btn btn-outline-danger btn-sm w-100">取消圖片</button>}
+                              {productContent.imagesUrl.length >1 && <button className="btn btn-outline-danger btn-sm w-100" onClick={removeImgaes}>取消圖片</button>}
                             </div>
                         </div>
                       </div>
