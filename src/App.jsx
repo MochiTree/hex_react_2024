@@ -100,7 +100,8 @@ function App() {
     modalInstance.hide();
   }
   
-  function handleOpenDelProductModal() {
+  function handleOpenDelProductModal(item) {
+    setContent(item)
     const modalInstance = Modal.getInstance(delModalRef.current);
     modalInstance.show();
   }
@@ -186,6 +187,20 @@ function App() {
             is_enabled:productContent.is_enabled ? 1 : 0,
         }})}
         catch(err){ alert('更新失敗',err.message) }
+  }
+
+  async function deleteProduct(){
+    try {
+      await axios.delete(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/admin/product/${productContent.id}`)
+    }catch(err){ alert('刪除失敗',err.message) }
+  }
+
+  async function handleDeleteProduct(){
+    try {
+      await deleteProduct();
+      getProducts();
+      handleCloseDelProductModal();
+    }catch(err){alert('發生錯誤')}
   }
   //點擊新增(addProduct)後 先post到api 再從api把結果撈回來渲染(getProducts)
     async function reRenderProduct(){
@@ -495,7 +510,7 @@ function App() {
                       >
                         取消
                       </button>
-                      <button type="button" className="btn btn-danger">
+                      <button type="button" className="btn btn-danger" onClick={handleDeleteProduct}>
                         刪除
                       </button>
                     </div>
@@ -529,7 +544,7 @@ function App() {
       <div className="btn-group">
       <button className='btn btn-primary btn-sm' style={{display:`${isBackEnd.display}`}} onClick={function() {
         handleOpenProductModal('edit',item);
-      }}>編輯</button><button className='btn btn-danger btn-sm' style={{display:`${isBackEnd.display}`}} onClick={handleOpenDelProductModal}>刪除</button></div>
+      }}>編輯</button><button className='btn btn-danger btn-sm' style={{display:`${isBackEnd.display}`}} onClick={()=>handleOpenDelProductModal(item)}>刪除</button></div>
     </tr>)
     })}
   </tbody>
