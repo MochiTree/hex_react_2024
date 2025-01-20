@@ -7,6 +7,7 @@ import {Modal} from 'bootstrap';
 function App() {
   const [productDetail, setDetail] = useState(null);//產品頁面:產品細節用
   const [products, setProducts] = useState([]);
+  const [pageStatus, setPageStatus] = useState({});
   const [isBackEnd, setIsBackEnd] = useState({
     display:'none',
     status:false,
@@ -136,16 +137,21 @@ function App() {
     .catch((err) => alert('登入失敗  '+err.message))
   }
 
-  //取得產品資料，除了初次登入(login)，驗證登入(loginCheck)也可取得資料
-  async function getProducts() {
+  //取得產品資料，除了初次登入(login)，驗證登入(loginCheck)也可取得資料(同時設定分頁預設值(預設第一頁)
+  async function getProducts(page=1) {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/admin/products`);
+      const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/admin/products?page=${page}`);
       setProducts(res.data.products);
+      setPageStatus(res.data.pagination);
     } catch (err) {
       alert(err.message);
     }
   };
 
+  //預設瀏覽頁面為第一頁(page=1)
+  function changePage(nowPage){
+    getProducts(nowPage);
+  }
   function addImages() {
     const imagesList = [...productContent.imagesUrl,''];
     setContent({
@@ -548,35 +554,35 @@ function App() {
     </tr>)
     })}
   </tbody>
-</table></div>
-  
- {/* <div className='col col-4'>        
-          <h1 className='fw-bold'>單一產品細節</h1>
-          {productDetail ? (
-                <div className="card mb-3">
-                  <img src={productDetail.imageUrl} className="card-img-top primary-image"/>
-                  <div className="card-body">
-                    <h5 className="card-title fw-bold">
-                      {productDetail.title}
-                      <span className="badge bg-primary ms-2">{productDetail.category}</span>
-                    </h5>
-                    <p className="card-text">商品描述：{productDetail.description}</p>
-                    <p className="card-text">商品內容：{productDetail.content}</p>
-                    <div className="d-flex">
-                      <p className="card-text text-secondary"><del>{productDetail.origin_price}</del></p>
-                      元 / {productDetail.price} 元
-                    </div>
-                    <h5 className="mt-3">更多圖片：</h5>
-                    <div className="d-flex flex-wrap">
-                      {productDetail.imagesUrl.map(function(item,index){
-                        return <img key={index} src={item} className='img-thumbnail w-25 object-fit-cover'/>
-                      })}
-                    </div>
-                  </div>
-                </div>
-              ) : <span className='text-muted'>請點選欲觀看產品之細節</span>}
-          </div>          */}
-          </div></>) : <><h2 className='mb-5 display-2 fw-bold'>登入</h2><form>
+</table>
+      {/* 分頁模板 */}
+      <div className="d-flex justify-content-center">
+        <nav>
+          <ul className="pagination">
+            <li className={`page-item ${!pageStatus.has_pre && 'disabled'}`}>
+              <a className="page-link" href="#">
+                上一頁
+              </a>
+            </li>
+            {Array.from({length:pageStatus.total_pages}).map(function(item,index){
+              return (<li key={index} className={`page-item ${pageStatus.current_page=== index+1 && 'active'}`}>
+                <a className="page-link" href="#" onClick={()=>changePage(index+1)}>
+                  {index+1}
+                </a>
+              </li>)
+            })}
+            
+            
+            <li className={`page-item ${!pageStatus.has_next && 'disabled'}`}>
+              <a className="page-link" href="#">
+                下一頁
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+</div>
+</div></>) : <><h2 className='mb-5 display-2 fw-bold'>登入</h2><form>
         <div className="form-group mb-3">
           <label htmlFor="email" className='pb-2'>Email</label>
           <input type="email" name='username' className="form-control form-control-lg" id="email" onChange={updateEnter} />
