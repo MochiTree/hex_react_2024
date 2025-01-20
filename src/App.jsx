@@ -560,7 +560,7 @@ function App() {
         <nav>
           <ul className="pagination">
             <li className={`page-item ${!pageStatus.has_pre && 'disabled'}`}>
-              <a className="page-link" href="#">
+              <a className="page-link" href="#" onClick={()=>changePage(pageStatus.current_page-1)}>
                 上一頁
               </a>
             </li>
@@ -574,7 +574,7 @@ function App() {
             
             
             <li className={`page-item ${!pageStatus.has_next && 'disabled'}`}>
-              <a className="page-link" href="#">
+              <a className="page-link" href="#" onClick={()=>changePage(pageStatus.current_page+1)}>
                 下一頁
               </a>
             </li>
