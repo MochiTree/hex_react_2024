@@ -3,6 +3,7 @@ import axios from 'axios';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Modal} from 'bootstrap';
+import LoginPage from './pages/LoginPage';
 
 function App() {
   const [productDetail, setDetail] = useState(null);//產品頁面:產品細節用
@@ -49,20 +50,13 @@ function App() {
       ...productContent,
       imagesUrl:newImages,
     })
-    // console.log(productContent)
   }
 
-  const [account,setAccount]=useState({
-    username:'請輸入信箱',
-    password:'請輸入密碼',
-  })
 
   useEffect(()=>{
-    // modalRefMethod.current = new Modal(modalRef.current);
+
     
     new Modal(modalRef.current);
-    // console.log(1,modalRef.current);
-    // console.log(2,Modal.getInstance(modalRef.current));
     new Modal(delModalRef.current);
 
     //從cookie抓出token，讓每次使用axios的時候把token放入header傳送
@@ -112,30 +106,6 @@ function App() {
     modalInstance.hide();
   }
 
-  function updateEnter(e){
-
-    setAccount({
-      ...account,
-      [e.target.name]:e.target.value,
-    })
-  }
-
-  //login後將token寫入cookie
-  function login(e){
-    e.preventDefault();
-    axios.post(`${import.meta.env.VITE_BASE_URL}/v2/admin/signin`,account)
-    .then((res) => {
-      alert(res.data.message);
-      const {token, expired} = res.data;
-      document.cookie = `loginToken=${token}; expires=${new Date(expired)}`;
-      setIsAdmin(true);
-
-      axios.defaults.headers.common['Authorization'] = `${token}`;
-
-      getProducts();
-    })
-    .catch((err) => alert('登入失敗  '+err.message))
-  }
 
   //取得產品資料，除了初次登入(login)，驗證登入(loginCheck)也可取得資料(同時設定分頁預設值(預設第一頁)
   async function getProducts(page=1) {
@@ -582,17 +552,7 @@ function App() {
         </nav>
       </div>
 </div>
-</div></>) : <><h2 className='mb-5 display-2 fw-bold'>登入</h2><form>
-        <div className="form-group mb-3">
-          <label htmlFor="email" className='pb-2'>Email</label>
-          <input type="email" name='username' className="form-control form-control-lg" id="email" onChange={updateEnter} />
-        </div>
-        <div className="form-group mb-3">
-          <label htmlFor="password" className='pb-2'>密碼</label>
-          <input type="password" name='password' className="form-control form-control-lg" id="password" onChange={updateEnter} />
-        </div>
-        <button onClick={login} type="submit" className="btn btn-primary">登入</button>
-      </form></>}
+</div></>) : <LoginPage getProducts={getProducts} setIsAdmin={setIsAdmin}></LoginPage>}
     </>
   )
 }
