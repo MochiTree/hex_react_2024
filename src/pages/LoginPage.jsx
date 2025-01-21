@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 // App父元件也會用到，所以用props把setIsAdmin(登入後設定登入狀態)跟getProducts()(axios拉進來產品資料)引近來子元件
 function LoginPage(props) {
@@ -7,7 +7,7 @@ function LoginPage(props) {
     password:'請輸入密碼',
   })
 
-  
+
     function updateEnter(e){
 
         setAccount({
@@ -24,10 +24,9 @@ function LoginPage(props) {
           const {token, expired} = res.data;
           document.cookie = `loginToken=${token}; expires=${new Date(expired)}`;
           props.setIsAdmin(true);
-    
           axios.defaults.headers.common['Authorization'] = `${token}`;
     
-          props.getProducts();
+          // props.getProducts();
         })
         .catch((err) => alert('登入失敗  '+err.message))
       } 
