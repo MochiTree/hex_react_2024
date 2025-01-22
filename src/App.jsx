@@ -1,8 +1,10 @@
 import { useState,useEffect } from 'react';
 import axios from 'axios';
-import './App.css'
+import './App.css';
 import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
+
+//由App為入口 判斷是否登入，登入後進去主頁面(MainPage)
 
 function App() {
  const [isAdmin,setIsAdmin]=useState(true);

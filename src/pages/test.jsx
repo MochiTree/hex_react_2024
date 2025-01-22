@@ -1,11 +1,10 @@
 // import { useState,useEffect,useRef } from 'react';
 // import axios from 'axios';
-// import './App.css';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 // import {Modal} from 'bootstrap';
-// import LoginPage from './pages/LoginPage';
+// import Pagination from '../components/Pagination';
 
-// function FrontPage() {
+// function MainPage(props) {
 //   const [productDetail, setDetail] = useState(null);//產品頁面:產品細節用
 //   const [products, setProducts] = useState([]);
 //   const [pageStatus, setPageStatus] = useState({});
@@ -13,7 +12,6 @@
 //     display:'none',
 //     status:false,
 //   });
-//   const [isAdmin, setIsAdmin]=useState(false);
 //   const [modalMode, setModalMode]=useState(null);
 //   const modalRef =useRef(null);
 //   const delModalRef=useRef(null);
@@ -65,7 +63,7 @@
 //       "$1",
 //     );
 //     axios.defaults.headers.common['Authorization'] = token;
-//     loginCheck();
+//     // loginCheck();
 //   },[])
 
 
@@ -114,7 +112,7 @@
 //       setProducts(res.data.products);
 //       setPageStatus(res.data.pagination);
 //     } catch (err) {
-//       alert(err.message);
+//       // alert(err.message);
 //     }
 //   };
 
@@ -200,17 +198,12 @@
 //   //   }
 //   // }
 
-//   //登入驗證，若已經登入的話，token有效時，不用二次登入，同時也可以用getProducts帶入產品資料
-//   async function loginCheck(){
-//     try{
-//       await axios.post(`${import.meta.env.VITE_BASE_URL}/v2/api/user/check`);
-//       setIsAdmin(true);
-//       getProducts();
-//     } catch(err) {
-//       console.log(err.message)
-//       setIsAdmin(false)
-//     }
-//   };
+//   //初始化時將資料傳入
+//     useEffect(()=>{
+//       getProducts()
+//     },[]);
+
+
 //   async function backEnd(){
 //     try{
 //       await axios.post(`${import.meta.env.VITE_BASE_URL}/v2/api/user/check`);
@@ -227,7 +220,7 @@
 //       };
 //     } catch(err) {
 //       alert(err.message)
-//       setIsAdmin(false)
+//       props.setIsAdmin(false)
 //     }
 //   };
 
@@ -493,7 +486,7 @@
 //                   </div>
 //                 </div>
 //               </div>
-//             { isAdmin ? (<><button className='btn btn-success mb-3 me-2' onClick={backEnd}>{isBackEnd.status ? '產品頁面' : '後台頁面'}</button>
+//            <><button className='btn btn-success mb-3 me-2' onClick={backEnd}>{isBackEnd.status ? '產品頁面' : '後台頁面'}</button>
 //             {/* <button className='btn btn-danger mb-3' onClick={loginCheck}>檢查登入狀態</button> */}
 //             <div className="row">
 //             <div className='col col'>
@@ -525,36 +518,11 @@
 //     })}
 //   </tbody>
 // </table>
-//       {/* 分頁模板 */}
-//       <div className="d-flex justify-content-center">
-//         <nav>
-//           <ul className="pagination">
-//             <li className={`page-item ${!pageStatus.has_pre && 'disabled'}`}>
-//               <a className="page-link" href="#" onClick={()=>changePage(pageStatus.current_page-1)}>
-//                 上一頁
-//               </a>
-//             </li>
-//             {Array.from({length:pageStatus.total_pages}).map(function(item,index){
-//               return (<li key={index} className={`page-item ${pageStatus.current_page=== index+1 && 'active'}`}>
-//                 <a className="page-link" href="#" onClick={()=>changePage(index+1)}>
-//                   {index+1}
-//                 </a>
-//               </li>)
-//             })}
-            
-            
-//             <li className={`page-item ${!pageStatus.has_next && 'disabled'}`}>
-//               <a className="page-link" href="#" onClick={()=>changePage(pageStatus.current_page+1)}>
-//                 下一頁
-//               </a>
-//             </li>
-//           </ul>
-//         </nav>
-//       </div>
+//       <Pagination pageStatus={pageStatus} changePage={changePage}></Pagination>
 // </div>
-// </div></>) : <LoginPage getProducts={getProducts} setIsAdmin={setIsAdmin}></LoginPage>}
+// </div></>
 //     </>
 //   )
 // }
 
-// export default FrontPage
+// export default MainPage;
