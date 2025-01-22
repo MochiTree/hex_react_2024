@@ -26,7 +26,6 @@ function LoginPage(props) {
           props.setIsAdmin(true);
           axios.defaults.headers.common['Authorization'] = `${token}`;
     
-          // props.getProducts();
         })
         .catch((err) => alert('登入失敗  '+err.message))
       } 

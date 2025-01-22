@@ -6,7 +6,12 @@ function DelProductModal(props) {
     const delModalRef=useRef(null);
     useEffect(()=>{
         new Modal(delModalRef.current);
-
+              //從cookie抓出token，讓每次使用axios的時候把token放入header傳送
+              const takeToken = document.cookie.replace(
+                /(?:(?:^|.*;\s*)loginToken\s*\=\s*([^;]*).*$)|^.*$/,
+                "$1",
+              );
+              axios.defaults.headers.common['Authorization'] = takeToken;
       },[])
       useEffect(()=>{
         if(props.isDelOpen){
