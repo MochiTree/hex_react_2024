@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Modal} from 'bootstrap';
 import Pagination from '../components/Pagination';
 import ProductModal from '../components/ProductModal';
+import DelProductModal from '../components/DelProductModal';
 
 
 function MainPage(props) {
@@ -16,8 +17,9 @@ function MainPage(props) {
   });
   const [modalMode, setModalMode]=useState(null);
   const [isOpen,setIsOpen]=useState(false);
+  const [isDelOpen,setDelIsOpen]=useState(false);
 
-  const delModalRef=useRef(null);
+
   // const modalRefMethod = useRef(null);
   const defaultModalState = {
     imageUrl: "",
@@ -53,34 +55,15 @@ function MainPage(props) {
             setIsOpen(true);
             }
 
-  useEffect(()=>{
 
-    
-    new Modal(delModalRef.current);
-
-    //從cookie抓出token，讓每次使用axios的時候把token放入header傳送
-    const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)loginToken\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1",
-    );
-    axios.defaults.headers.common['Authorization'] = token;
-    // loginCheck();
-  },[])
-
-
+            
+          function handleOpenDelProductModal(item) {
+            setContent(item)
+            setDelIsOpen(true);
+          }   
+  
 
   
-  function handleOpenDelProductModal(item) {
-    setContent(item)
-    const modalInstance = Modal.getInstance(delModalRef.current);
-    modalInstance.show();
-  }
-
-  function handleCloseDelProductModal() {
-    const modalInstance = Modal.getInstance(delModalRef.current);
-    modalInstance.hide();
-  }
-
 
   //取得產品資料，除了初次登入(login)，驗證登入(loginCheck)也可取得資料(同時設定分頁預設值(預設第一頁)
   async function getProducts(page=1) {
@@ -100,19 +83,6 @@ function MainPage(props) {
  
 
 
-  async function deleteProduct(){
-    try {
-      await axios.delete(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/admin/product/${productContent.id}`)
-    }catch(err){ alert('刪除失敗',err.message) }
-  }
-
-  async function handleDeleteProduct(){
-    try {
-      await deleteProduct();
-      getProducts();
-      handleCloseDelProductModal();
-    }catch(err){alert('發生錯誤')}
-  }
   
   //箭頭函式寫法
   // const loginCheck = async() =>{
@@ -165,44 +135,7 @@ function MainPage(props) {
             </div>
             </div>  */}
               <ProductModal modalMode={modalMode} productContent={productContent} isOpen={isOpen} setIsOpen={setIsOpen} setContent={setContent} getProducts={getProducts}></ProductModal>
-              <div
-                className="modal fade"
-                ref={delModalRef}
-                id="delProductModal"
-                tabIndex="-1"
-                style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-              >
-                <div className="modal-dialog">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h1 className="modal-title fs-5">刪除產品</h1>
-                      <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                        onClick={handleCloseDelProductModal}
-                      ></button>
-                    </div>
-                    <div className="modal-body">
-                      你是否要刪除 
-                      <span className="text-danger fw-bold">{productContent.title}</span>
-                    </div>
-                    <div className="modal-footer">
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        onClick={handleCloseDelProductModal}
-                      >
-                        取消
-                      </button>
-                      <button type="button" className="btn btn-danger" onClick={handleDeleteProduct}>
-                        刪除
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <DelProductModal getProducts={getProducts} productContent={productContent} isDelOpen={isDelOpen} setDelIsOpen={setDelIsOpen} setContent={setContent}></DelProductModal>
            <><button className='btn btn-success mb-3 me-2' onClick={backEnd}>{isBackEnd.status ? '產品頁面' : '後台頁面'}</button>
             {/* <button className='btn btn-danger mb-3' onClick={loginCheck}>檢查登入狀態</button> */}
             <div className="row">
