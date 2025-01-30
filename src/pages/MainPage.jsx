@@ -5,6 +5,7 @@ import {Modal} from 'bootstrap';
 import Pagination from '../components/Pagination';
 import ProductModal from '../components/ProductModal';
 import DelProductModal from '../components/DelProductModal';
+import ProductPage from './ProductPage';
 
 
 function MainPage(props) {
@@ -102,18 +103,18 @@ function MainPage(props) {
 
 
   function backEnd(){
-      if(isBackEnd.display==='block'){
-        setIsBackEnd({
-          display:'none',
-          status:!isBackEnd.status,
-        });
-      }else if(isBackEnd.display==='none') {
-        setIsBackEnd({
-          display:'inline-block',
-          status:!isBackEnd.status,
-        });
-      };
+    if(isBackEnd.display==='block'){
+      setIsBackEnd({
+        display:'none',
+        status:!isBackEnd.status,
+      });
+    }else if(isBackEnd.display==='none') {
+      setIsBackEnd({
+        display:'inline-block',
+        status:!isBackEnd.status,
+      });
     };
+  };
 
   return (
     <>
@@ -149,7 +150,7 @@ function MainPage(props) {
       <th scope="col">原價</th>
       <th scope="col">售價</th>
       <th scope="col">是否啟用</th>
-      {/* <th scope="col">查看細節</th> */}
+      <th scope="col">查看細節</th>
     </tr>
   </thead>
   <tbody>
@@ -159,7 +160,7 @@ function MainPage(props) {
       <td>{item.origin_price}</td>
       <td>{item.price}</td>
       <td>{item.is_enabled ? <span className='text-success'>已啟用</span>: <span>未啟用</span>}</td>
-      {/* <td><button className='btn btn-primary btn-sm' onClick={()=>setDetail(item)}>查看細節</button></td> */}
+      <td><button className='btn btn-primary btn-sm' onClick={()=>setDetail(item)}>查看細節</button></td>
       <div className="btn-group">
       <button className='btn btn-primary btn-sm' style={{display:`${isBackEnd.display}`}} onClick={function() {
         handleOpenProductModal('edit',item);
@@ -170,6 +171,10 @@ function MainPage(props) {
 </table>
       <Pagination pageStatus={pageStatus} changePage={changePage}></Pagination>
 </div>
+<div className='col col-4'>         
+<h1 className='fw-bold'>單一產品細節</h1>
+          {productDetail ? <ProductPage productDetail={productDetail}></ProductPage> : <span className='text-muted'>請點選欲觀看產品之細節</span>}
+          </div>      
 </div></>
     </>
   )
