@@ -7,12 +7,14 @@ import ProductModal from '../components/ProductModal';
 import DelProductModal from '../components/DelProductModal';
 import ProductPage from './ProductPage';
 import TopBar from '../components/TopBar';
+import CartPage from './CartPage';
 
 
 function MainPage(props) {
   const [productDetail, setDetail] = useState(null);//產品頁面:產品細節用
   const [products, setProducts] = useState([]);
   const [pageStatus, setPageStatus] = useState({});
+  const [isCart,setIsCart]=useState(false);
   const [isBackEnd, setIsBackEnd] = useState({
     display:'none',
     status:false,
@@ -85,12 +87,13 @@ function MainPage(props) {
   }
  
 
+
   async function addCart(item){
     try {
       await axios.post(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/cart`,{
         data:{
           product_id:item.id,
-          qty:1,
+          qty:Number(1),
         }
       });
       alert("已加入購物車");
@@ -115,6 +118,7 @@ function MainPage(props) {
     },[]);
 
   function backEnd(){
+    setIsCart(false);
     if(isBackEnd.status===true){
       setIsBackEnd({
         display:'none',
@@ -129,7 +133,9 @@ function MainPage(props) {
       });
     };
   };
-
+ function toCartPage(){
+  setIsCart(true);
+ }
   return (
     <>
      {/* <div className="modal fade" ref={modalRef} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -150,9 +156,10 @@ function MainPage(props) {
             </div>
             </div>  */}
 
-              <TopBar backEnd={backEnd} isBackEnd={isBackEnd}></TopBar>
+              <TopBar backEnd={backEnd} isBackEnd={isBackEnd} toCartPage={toCartPage}></TopBar>
               <ProductModal modalMode={modalMode} productContent={productContent} isOpen={isOpen} setIsOpen={setIsOpen} setContent={setContent} getProducts={getProducts}></ProductModal>
               <DelProductModal getProducts={getProducts} productContent={productContent} isDelOpen={isDelOpen} setDelIsOpen={setDelIsOpen} setContent={setContent}></DelProductModal>
+              {isCart ? <CartPage></CartPage> : 
            <>
            {/* <button className='btn btn-success mb-3 me-2' onClick={backEnd}>{isBackEnd.status ? '產品頁面' : '後台頁面'}</button> */}
             {/* <button className='btn btn-danger mb-3' onClick={loginCheck}>檢查登入狀態</button> */}
@@ -192,7 +199,7 @@ function MainPage(props) {
 <div className='col col-4' style={{display:`${isBackEnd.displayFront}`}}>         
 <h1 className='fw-bold'>單一產品細節</h1>
           {productDetail ? <ProductPage productDetail={productDetail} function={addCart}></ProductPage> : <span className='text-muted'>請點選欲觀看產品之細節</span>}
-          </div>      </div></>
+          </div>      </div></>}
     </>
   )
 }
