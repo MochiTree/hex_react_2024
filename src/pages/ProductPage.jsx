@@ -4,7 +4,7 @@ function ProductPage(props){
     <div className="card-body">
       <h5 className="card-title fw-bold">
         {props.productDetail.title}
-        <span className="badge bg-primary ms-2">{props.productDetail.category}</span>
+        <span className="badge bg-primary ms-2">{props.productDetail.category}</span><button className='btn btn-warning btn-sm ms-2'onClick={()=>props.function(props.productDetail)}>加入購物車</button>
       </h5>
       <p className="card-text">商品描述：{props.productDetail.description}</p>
       <p className="card-text">商品內容：{props.productDetail.content}</p>

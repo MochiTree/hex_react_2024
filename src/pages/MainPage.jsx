@@ -84,7 +84,18 @@ function MainPage(props) {
   }
  
 
-
+  async function addCart(item){
+    try {
+      await axios.post(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/cart`,{
+        data:{
+          product_id:item.id,
+          qty:1,
+        }
+      });
+      alert("已加入購物車");
+    }
+    catch(err){alert(err)}
+}
   
   //箭頭函式寫法
   // const loginCheck = async() =>{
@@ -163,6 +174,7 @@ function MainPage(props) {
       <td>{item.price}</td>
       <td style={{display:`${isBackEnd.display}`}}>{item.is_enabled ? <span className='text-success'>已啟用</span>: <span>未啟用</span>}</td>
       <td><button className='btn btn-primary btn-sm' onClick={()=>setDetail(item)} style={{display:`${isBackEnd.displayFront}`}}>查看細節</button></td>
+      <td><button className='btn btn-warning btn-sm' style={{display:`${isBackEnd.displayFront}`}} onClick={()=>addCart(item)}>加入購物車</button></td>
       <div className="btn-group">
       <button className='btn btn-primary btn-sm' style={{display:`${isBackEnd.display}`}} onClick={function() {
         handleOpenProductModal('edit',item);
@@ -175,7 +187,7 @@ function MainPage(props) {
 </div>
 <div className='col col-4' style={{display:`${isBackEnd.displayFront}`}}>         
 <h1 className='fw-bold'>單一產品細節</h1>
-          {productDetail ? <ProductPage productDetail={productDetail}></ProductPage> : <span className='text-muted'>請點選欲觀看產品之細節</span>}
+          {productDetail ? <ProductPage productDetail={productDetail} function={addCart}></ProductPage> : <span className='text-muted'>請點選欲觀看產品之細節</span>}
           </div>      </div></>
     </>
   )
