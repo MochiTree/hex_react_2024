@@ -15,6 +15,7 @@ function MainPage(props) {
   const [isBackEnd, setIsBackEnd] = useState({
     display:'none',
     status:false,
+    displayFront:'block',
   });
   const [modalMode, setModalMode]=useState(null);
   const [isOpen,setIsOpen]=useState(false);
@@ -101,17 +102,18 @@ function MainPage(props) {
       getProducts()
     },[]);
 
-
   function backEnd(){
-    if(isBackEnd.display==='block'){
+    if(isBackEnd.status===true){
       setIsBackEnd({
         display:'none',
         status:!isBackEnd.status,
+        displayFront:'inline-block'
       });
-    }else if(isBackEnd.display==='none') {
+    }else if(isBackEnd.status===false) {
       setIsBackEnd({
         display:'inline-block',
         status:!isBackEnd.status,
+        displayFront:'none'
       });
     };
   };
@@ -149,8 +151,8 @@ function MainPage(props) {
       <th scope="col">產品名稱</th>
       <th scope="col">原價</th>
       <th scope="col">售價</th>
-      <th scope="col">是否啟用</th>
-      <th scope="col">查看細節</th>
+      <th scope="col" style={{display:`${isBackEnd.display}`}}>是否啟用</th>
+      <th scope="col" style={{display:`${isBackEnd.displayFront}`}}>查看細節</th>
     </tr>
   </thead>
   <tbody>
@@ -159,8 +161,8 @@ function MainPage(props) {
       <th scope="row">{item.title}</th>
       <td>{item.origin_price}</td>
       <td>{item.price}</td>
-      <td>{item.is_enabled ? <span className='text-success'>已啟用</span>: <span>未啟用</span>}</td>
-      <td><button className='btn btn-primary btn-sm' onClick={()=>setDetail(item)}>查看細節</button></td>
+      <td style={{display:`${isBackEnd.display}`}}>{item.is_enabled ? <span className='text-success'>已啟用</span>: <span>未啟用</span>}</td>
+      <td><button className='btn btn-primary btn-sm' onClick={()=>setDetail(item)} style={{display:`${isBackEnd.displayFront}`}}>查看細節</button></td>
       <div className="btn-group">
       <button className='btn btn-primary btn-sm' style={{display:`${isBackEnd.display}`}} onClick={function() {
         handleOpenProductModal('edit',item);
@@ -171,11 +173,10 @@ function MainPage(props) {
 </table>
       <Pagination pageStatus={pageStatus} changePage={changePage}></Pagination>
 </div>
-<div className='col col-4'>         
+<div className='col col-4' style={{display:`${isBackEnd.displayFront}`}}>         
 <h1 className='fw-bold'>單一產品細節</h1>
           {productDetail ? <ProductPage productDetail={productDetail}></ProductPage> : <span className='text-muted'>請點選欲觀看產品之細節</span>}
-          </div>      
-</div></>
+          </div>      </div></>
     </>
   )
 }
