@@ -6,6 +6,7 @@ import Pagination from '../components/Pagination';
 import ProductModal from '../components/ProductModal';
 import DelProductModal from '../components/DelProductModal';
 import ProductPage from './ProductPage';
+import TopBar from '../components/TopBar';
 
 
 function MainPage(props) {
@@ -148,9 +149,12 @@ function MainPage(props) {
                 </div>
             </div>
             </div>  */}
+
+              <TopBar backEnd={backEnd} isBackEnd={isBackEnd}></TopBar>
               <ProductModal modalMode={modalMode} productContent={productContent} isOpen={isOpen} setIsOpen={setIsOpen} setContent={setContent} getProducts={getProducts}></ProductModal>
               <DelProductModal getProducts={getProducts} productContent={productContent} isDelOpen={isDelOpen} setDelIsOpen={setDelIsOpen} setContent={setContent}></DelProductModal>
-           <><button className='btn btn-success mb-3 me-2' onClick={backEnd}>{isBackEnd.status ? '產品頁面' : '後台頁面'}</button>
+           <>
+           {/* <button className='btn btn-success mb-3 me-2' onClick={backEnd}>{isBackEnd.status ? '產品頁面' : '後台頁面'}</button> */}
             {/* <button className='btn btn-danger mb-3' onClick={loginCheck}>檢查登入狀態</button> */}
             <div className="row">
             <div className='col col'>
