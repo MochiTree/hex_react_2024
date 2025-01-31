@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react';
+import { useForm } from "react-hook-form";
 import axios from 'axios';
 
 
@@ -31,7 +32,7 @@ function CartPage(){
         }catch(err){
             alert(err);
         }}else{
-        alert('數量不得小於0');}
+        alert('數量不得小於1');}
     }
 
     async function deleteAllCart(){
@@ -51,6 +52,17 @@ function CartPage(){
             alert(err);
         }
     }
+
+    const {
+        register,
+        handleSubmit,
+        formState:{errors}
+    }=useForm()
+
+    const onSubmit=handleSubmit((data)=>{
+        console.log(data);
+    })
+
     return <><table className="table align-middle">
                 <thead>
                 <tr>
@@ -107,13 +119,98 @@ function CartPage(){
                     <td colSpan="3" className="text-end">
                     總計：
                     </td>
-                    <td className="text-end" style={{ width: "130px" }}></td>
+                    <td className="text-end" style={{ width: "130px" }}>{cart.total}</td>
                 </tr>
                 <tr>
                     <td colSpan="4"><button className='btn btn-danger' onClick={deleteAllCart}>清空購物車</button></td>
                 </tr>
                 </tfoot>
-            </table></>
+            </table>
+                   <div className="my-5 row justify-content-center">
+                    <form onSubmit={onSubmit} className="col-md-6">
+                    <div className="mb-3">
+                        <label htmlFor="email" className="form-label">
+                        Email
+                        </label>
+                        <input
+                        {...register('email',{
+                            required:'Email 為必填欄位',
+                            pattern:{
+                                value:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                message:'格式錯誤'
+                            }
+                        })}
+                        id="email"
+                        type="email"
+                        className={`form-control ${errors.email && 'is-invalid'}`}
+                        placeholder="請輸入 Email"
+                        />
+
+                        {errors.email &&<p className="text-danger my-2">{errors.email.message}</p>}
+                    </div>
+
+                    <div className="mb-3">
+                        <label htmlFor="name" className="form-label">
+                        收件人姓名
+                        </label>
+                        <input
+                        id="name"
+                        className="form-control"
+                        placeholder="請輸入姓名"
+                        />
+
+                        <p className="text-danger my-2"></p>
+                    </div>
+
+                    <div className="mb-3">
+                        <label htmlFor="tel" className="form-label">
+                        收件人電話
+                        </label>
+                        <input
+                        id="tel"
+                        type="text"
+                        className="form-control"
+                        placeholder="請輸入電話"
+                        />
+
+                        <p className="text-danger my-2"></p>
+                    </div>
+
+                    <div className="mb-3">
+                        <label htmlFor="address" className="form-label">
+                        收件人地址
+                        </label>
+                        <input
+                        id="address"
+                        type="text"
+                        className="form-control"
+                        placeholder="請輸入地址"
+                        />
+
+                        <p className="text-danger my-2"></p>
+                    </div>
+
+                    <div className="mb-3">
+                        <label htmlFor="message" className="form-label">
+                        留言
+                        </label>
+                        <textarea
+                        id="message"
+                        className="form-control"
+                        cols="30"
+                        rows="10"
+                        ></textarea>
+                    </div>
+                    <div className="text-end">
+                        <button type="submit" className="btn btn-danger">
+                        送出訂單
+                        </button>
+                    </div>
+                    </form>
+                </div>
+            
+            </>
+            
 }
 
 export default CartPage
