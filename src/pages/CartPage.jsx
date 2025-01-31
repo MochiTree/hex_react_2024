@@ -17,6 +17,20 @@ function CartPage(){
     useEffect(()=>{
         getCart();
     },[]);
+
+    async function updateCart(item,qty){
+        try{
+            await axios.put(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/cart/${item.id}`,{
+                data:{
+                    product_id:item.product_id,
+                    qty:Number(qty)
+                }
+            });
+            getCart();
+        }catch(err){
+            alert(err);
+        }
+    }
     return <><table className="table align-middle">
                 <thead>
                 <tr>
@@ -43,6 +57,7 @@ function CartPage(){
                     <button
                         type="button"
                         className="btn btn-outline-dark btn-sm"
+                        onClick={()=>updateCart(item,item.qty-1)}
                     >
                         -
                     </button>
@@ -53,6 +68,7 @@ function CartPage(){
                     <button
                         type="button"
                         className="btn btn-outline-dark btn-sm"
+                        onClick={()=>updateCart(item,item.qty+1)}
                     >
                         +
                     </button>
