@@ -31,6 +31,16 @@ function CartPage(){
             alert(err);
         }
     }
+
+    async function deleteAllCart(){
+        try{
+            await axios.delete(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/carts`);
+            getCart();
+            alert('已清除購物車');
+        }catch(err){
+            alert(err);
+        }
+    }
     return <><table className="table align-middle">
                 <thead>
                 <tr>
@@ -43,7 +53,7 @@ function CartPage(){
 
                 <tbody>
                     {cart.carts?.map(function(item){
-                        return (
+                        return (           
                 <tr key={item.id}>
                 <td>
                 <button type="button" className="btn btn-outline-danger btn-sm">
@@ -88,6 +98,9 @@ function CartPage(){
                     總計：
                     </td>
                     <td className="text-end" style={{ width: "130px" }}></td>
+                </tr>
+                <tr>
+                    <td colSpan="4"><button className='btn btn-danger' onClick={deleteAllCart}>清空購物車</button></td>
                 </tr>
                 </tfoot>
             </table></>
