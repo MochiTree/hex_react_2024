@@ -19,6 +19,7 @@ function CartPage(){
     },[]);
 
     async function updateCart(item,qty){
+        if(qty>0){
         try{
             await axios.put(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/cart/${item.id}`,{
                 data:{
@@ -29,7 +30,8 @@ function CartPage(){
             getCart();
         }catch(err){
             alert(err);
-        }
+        }}else{
+        alert('數量不得小於0');}
     }
 
     async function deleteAllCart(){
@@ -37,6 +39,14 @@ function CartPage(){
             await axios.delete(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/carts`);
             getCart();
             alert('已清除購物車');
+        }catch(err){
+            alert(err);
+        }
+    }
+    async function deleteSingleItem(item){
+        try{
+            await axios.delete(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/cart/${item.id}`);
+            getCart();
         }catch(err){
             alert(err);
         }
@@ -56,7 +66,7 @@ function CartPage(){
                         return (           
                 <tr key={item.id}>
                 <td>
-                <button type="button" className="btn btn-outline-danger btn-sm">
+                <button type="button" className="btn btn-outline-danger btn-sm" onClick={()=>deleteSingleItem(item)}>
                     x
                 </button>
                 </td>
