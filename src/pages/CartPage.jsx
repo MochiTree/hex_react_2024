@@ -61,8 +61,10 @@ function CartPage(){
     const onSubmit=handleSubmit((data)=>{
         const {message,...user} = data;
         const orderForm = {
+            data:{
             user,
             message
+            }
         }
         checkoutCart(orderForm)
     })
