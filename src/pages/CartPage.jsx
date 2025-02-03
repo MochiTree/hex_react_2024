@@ -9,7 +9,6 @@ function CartPage(){
         try{
             const res= await axios.get(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/cart`);
             setCart(res.data.data);
-            console.log(res.data.data);
             }catch(err){
                 alert(err);
             }
@@ -39,7 +38,7 @@ function CartPage(){
         try{
             await axios.delete(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/carts`);
             getCart();
-            alert('已清除購物車');
+            // alert('已清除購物車');
         }catch(err){
             alert(err);
         }
@@ -60,8 +59,23 @@ function CartPage(){
     }=useForm()
 
     const onSubmit=handleSubmit((data)=>{
-        console.log(data);
+        const {message,...user} = data;
+        const orderForm = {
+            user,
+            message
+        }
+        checkoutCart(orderForm)
     })
+
+    async function checkoutCart(formData) {
+        try{
+            axios.post(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/order`,formData);
+            alert('結帳成功');
+            // deleteAllCart();
+        }catch(err){
+            alert('結帳失敗')
+        }
+    }
 
     return <><table className="table align-middle">
                 <thead>
@@ -126,7 +140,7 @@ function CartPage(){
                 </tr>
                 </tfoot>
             </table>
-                   <div className="my-5 row justify-content-center">
+            <div className="my-5 row justify-content-center">
                     <form onSubmit={onSubmit} className="col-md-6">
                     <div className="mb-3">
                         <label htmlFor="email" className="form-label">
@@ -208,6 +222,7 @@ function CartPage(){
                         留言
                         </label>
                         <textarea
+                        {...register('message')}
                         id="message"
                         className="form-control"
                         cols="30"
@@ -215,7 +230,7 @@ function CartPage(){
                         ></textarea>
                     </div>
                     <div className="text-end">
-                        <button type="submit" className="btn btn-danger">
+                        <button type="submit" className="btn btn-danger" onSubmit={onSubmit}>
                         送出訂單
                         </button>
                     </div>
