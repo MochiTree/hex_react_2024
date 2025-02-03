@@ -170,13 +170,20 @@ function CartPage(){
                         收件人電話
                         </label>
                         <input
+                        {...register('tel',{
+                            required:'電話 為必填欄位',
+                            pattern:{
+                                value:/^(0[2-8]\d{7}|09\d{8})$/,
+                                message:'電話格式錯誤 (家電/手機皆可)'
+                            }
+                        })}
                         id="tel"
                         type="text"
-                        className="form-control"
+                        className={`form-control ${errors.tel && 'is-invalid'}`}
                         placeholder="請輸入電話"
                         />
 
-                        <p className="text-danger my-2"></p>
+                        {errors.tel &&<p className="text-danger my-2">{errors.tel.message}</p>}
                     </div>
 
                     <div className="mb-3">
