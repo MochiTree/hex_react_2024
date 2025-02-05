@@ -60,7 +60,8 @@ function CartPage(props){
     const {
         register,
         handleSubmit,
-        formState:{errors}
+        formState:{errors},
+        reset
     }=useForm()
 
     const onSubmit=handleSubmit((data)=>{
@@ -76,9 +77,10 @@ function CartPage(props){
 
     async function checkoutCart(formData) {
         try{
-            axios.post(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/order`,formData);
+            await axios.post(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/order`,formData);
             alert('結帳成功');
             deleteAllCart();
+            reset();
         }catch(err){
             alert('結帳失敗')
         }
