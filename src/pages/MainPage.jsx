@@ -8,11 +8,13 @@ import DelProductModal from '../components/DelProductModal';
 import ProductPage from './ProductPage';
 import TopBar from '../components/TopBar';
 import CartPage from './CartPage';
+import ReactLoading from 'react-loading';
 
 
 function MainPage(props) {
   const [productDetail, setDetail] = useState(null);//產品頁面:產品細節用
   const [products, setProducts] = useState([]);
+  const [isLoading,setIsLoading]=useState(true);
   const [pageStatus, setPageStatus] = useState({});
   const [isCart,setIsCart]=useState(false);
   const [isBackEnd, setIsBackEnd] = useState({
@@ -72,12 +74,15 @@ function MainPage(props) {
 
   //取得產品資料，除了初次登入(login)，驗證登入(loginCheck)也可取得資料(同時設定分頁預設值(預設第一頁)
   async function getProducts(page=1) {
+    setIsLoading(true)
     try {
       const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/admin/products?page=${page}`);
       setProducts(res.data.products);
       setPageStatus(res.data.pagination);
     } catch (err) {
       // alert(err.message);
+    }finally{
+      setIsLoading(false)
     }
   };
 
@@ -159,7 +164,7 @@ function MainPage(props) {
               <TopBar backEnd={backEnd} isBackEnd={isBackEnd} toCartPage={toCartPage}></TopBar>
               <ProductModal modalMode={modalMode} productContent={productContent} isOpen={isOpen} setIsOpen={setIsOpen} setContent={setContent} getProducts={getProducts}></ProductModal>
               <DelProductModal getProducts={getProducts} productContent={productContent} isDelOpen={isDelOpen} setDelIsOpen={setDelIsOpen} setContent={setContent}></DelProductModal>
-              {isCart ? <CartPage></CartPage> : 
+              {isCart ? <CartPage isLoading={isLoading} setIsLoading={setIsLoading}></CartPage> : 
            <>
            {/* <button className='btn btn-success mb-3 me-2' onClick={backEnd}>{isBackEnd.status ? '產品頁面' : '後台頁面'}</button> */}
             {/* <button className='btn btn-danger mb-3' onClick={loginCheck}>檢查登入狀態</button> */}
@@ -199,7 +204,12 @@ function MainPage(props) {
 <div className='col col-4' style={{display:`${isBackEnd.displayFront}`}}>         
 <h1 className='fw-bold'>單一產品細節</h1>
           {productDetail ? <ProductPage productDetail={productDetail} function={addCart}></ProductPage> : <span className='text-muted'>請點選欲觀看產品之細節</span>}
-          </div>      </div></>}
+          </div>      
+          {isLoading && <div className='d-flex justify-content-center align-items-center'
+                        style={{backgroundColor:'rgba(205, 233, 202, 0.4)',position:'fixed',top:0,left:0,right:0,bottom:0}}>
+                        <ReactLoading type={'spin'} color={'#000'} height={'3rem'} width={'3rem'} />
+                        </div>}
+          </div></>}
     </>
   )
 }
