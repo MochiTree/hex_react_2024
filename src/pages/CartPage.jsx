@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
+import ReactLoading from 'react-loading';
 
 
 function CartPage(){
@@ -73,7 +74,7 @@ function CartPage(){
         try{
             axios.post(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/order`,formData);
             alert('結帳成功');
-            // deleteAllCart();
+            deleteAllCart();
         }catch(err){
             alert('結帳失敗')
         }
@@ -238,7 +239,10 @@ function CartPage(){
                     </div>
                     </form>
                 </div>
-            
+            <div className='d-flex justify-content-center align-items-center'
+            style={{backgroundColor:'rgba(205, 233, 202, 0.4)',position:'fixed',top:0,left:0,right:0,bottom:0}}>
+            <ReactLoading type={'spin'} color={'#000'} height={'3rem'} width={'3rem'} />
+            </div>
             </>
             
 }
