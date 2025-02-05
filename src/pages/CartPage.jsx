@@ -79,7 +79,7 @@ function CartPage(props){
         try{
             await axios.post(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/order`,formData);
             alert('結帳成功');
-            deleteAllCart();
+            getCart();
             reset();
         }catch(err){
             alert('結帳失敗')
