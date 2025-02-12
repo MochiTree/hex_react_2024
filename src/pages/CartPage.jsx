@@ -145,7 +145,7 @@ function CartPage(props){
                     <td className="text-end" style={{ width: "130px" }}>{cart.total}</td>
                 </tr>
                 <tr>
-                    <td colSpan="4"><button className='btn btn-danger' onClick={deleteAllCart}>清空購物車</button></td>
+                    <td colSpan="4"><button className='btn btn-danger' onClick={deleteAllCart} disabled={cart.carts?.length==0}>清空購物車</button></td>
                 </tr>
                 </tfoot>
             </table>
