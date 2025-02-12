@@ -1,6 +1,7 @@
 import {createHashRouter} from 'react-router-dom';
 import FrontBar from '../layouts/FrontBar';
 import HomePage from '../pages/HomePage';
+import App from '../App'
 
 const index=createHashRouter([
     {
@@ -10,6 +11,10 @@ const index=createHashRouter([
             {
                 path:'',
                 element: <HomePage/>,
+            },
+            {
+                path:'product',
+                element: <App></App>
             }
         ]
     }
