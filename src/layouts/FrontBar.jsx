@@ -1,15 +1,25 @@
-import { Outlet } from "react-router-dom"
+import { NavLink, Outlet } from "react-router-dom"
+
+const paths = [
+    { path: "/", name: "首頁" },
+    { path: "/products", name: "產品列表" },
+    { path: "/cart", name: "購物車" },
+  ];
 
 function FrontBar(){
     return (
         <><nav className="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
             <div className="container">
                 <ul className="navbar-nav flex-row gap-5 fs-5">
-                <li className="nav-item">
-                    <a className="nav-link" aria-current="page" href="#">首頁</a>
-                </li>
-                <li className="nav-item"><a className="nav-link" href="#">產品頁面</a></li>
-                <li className="nav-item"><a className="nav-link" href="#">購物車</a></li>
+                {
+                    paths.map(function(item){
+                        return (
+                            <><li className="nav-item">
+                            <NavLink className="nav-link" aria-current="page" to={item.path}>{item.name}</NavLink>
+                            </li></>
+                        )
+                    })
+                }
                 </ul>
             </div>
             </nav>
