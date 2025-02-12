@@ -14,7 +14,7 @@ function FrontBar(){
                 {
                     paths.map(function(item){
                         return (
-                            <><li className="nav-item">
+                            <><li key={item.path} className="nav-item">
                             <NavLink className="nav-link" aria-current="page" to={item.path}>{item.name}</NavLink>
                             </li></>
                         )
