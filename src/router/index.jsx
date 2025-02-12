@@ -1,9 +1,17 @@
 import {createHashRouter} from 'react-router-dom';
+import FrontBar from '../layouts/FrontBar';
+import HomePage from '../pages/HomePage';
 
 const index=createHashRouter([
     {
         path:'/',
-        element: <h1>首頁</h1>
+        element: <FrontBar></FrontBar>,
+        children:[
+            {
+                path:'',
+                element: <HomePage/>,
+            }
+        ]
     }
 ])
 
