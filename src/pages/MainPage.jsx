@@ -2,11 +2,12 @@ import { useState,useEffect,useRef } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Modal} from 'bootstrap';
+import '../App.css';
 import Pagination from '../components/Pagination';
 import ProductModal from '../components/ProductModal';
 import DelProductModal from '../components/DelProductModal';
 import ProductPage from './ProductPage';
-import TopBar from '../components/TopBar';
+// import TopBar from '../components/TopBar';
 import CartPage from './CartPage';
 import ReactLoading from 'react-loading';
 
@@ -161,7 +162,7 @@ function MainPage(props) {
             </div>
             </div>  */}
 
-              <TopBar backEnd={backEnd} isBackEnd={isBackEnd} toCartPage={toCartPage}></TopBar>
+              {/* <TopBar backEnd={backEnd} isBackEnd={isBackEnd} toCartPage={toCartPage}></TopBar> */}
               <ProductModal modalMode={modalMode} productContent={productContent} isOpen={isOpen} setIsOpen={setIsOpen} setContent={setContent} getProducts={getProducts}></ProductModal>
               <DelProductModal getProducts={getProducts} productContent={productContent} isDelOpen={isDelOpen} setDelIsOpen={setDelIsOpen} setContent={setContent}></DelProductModal>
               {/* {isCart ? <CartPage isLoading={isLoading} setIsLoading={setIsLoading}></CartPage> :  */}

@@ -4,6 +4,7 @@ const paths = [
     { path: "/", name: "首頁" },
     { path: "/product", name: "產品列表" },
     { path: "/cart", name: "購物車" },
+    { path: "/backend",name:'後台頁面'}
   ];
 
 function FrontBar(){

@@ -1,9 +1,11 @@
 import {createHashRouter} from 'react-router-dom';
 import FrontBar from '../layouts/FrontBar';
 import HomePage from '../pages/HomePage';
-import App from '../App'
+// import App from '../App'
 // import LoginPage from '../pages/LoginPage';
 import CartPage from '../pages/CartPage';
+import MainPage from '../pages/MainPage';
+import BackEndPage from '../pages/BackEndPage';
 
 const index=createHashRouter([
     {
@@ -16,11 +18,15 @@ const index=createHashRouter([
             },
             {
                 path:'product',
-                element: <App></App>
+                element: <MainPage></MainPage>
             },
             {
                 path:'cart',
                 element: <CartPage></CartPage>
+            },
+            {
+                path:'backend',
+                element:<BackEndPage></BackEndPage>
             }
         ]
     }
