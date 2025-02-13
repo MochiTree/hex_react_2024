@@ -1,7 +1,6 @@
 import {createHashRouter} from 'react-router-dom';
 import FrontBar from '../layouts/FrontBar';
 import HomePage from '../pages/HomePage';
-// import App from '../App'
 import LoginPage from '../pages/LoginPage';
 import CartPage from '../pages/CartPage';
 import MainPage from '../pages/MainPage';

@@ -4,7 +4,6 @@ import Pagination from '../components/Pagination';
 import ProductModal from '../components/ProductModal';
 import DelProductModal from '../components/DelProductModal';
 import ReactLoading from 'react-loading';
-// import {Redirect} from 'react-router-dom';
 import {Navigate} from 'react-router-dom';
 function BackEndPage(){
       const [products, setProducts] = useState([]);
@@ -88,21 +87,8 @@ function BackEndPage(){
               loginCheck();
             },[])
 
-            // async function addCart(item){
-            //     try {
-            //       await axios.post(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/cart`,{
-            //         data:{
-            //           product_id:item.id,
-            //           qty:Number(1),
-            //         }
-            //       });
-            //       alert("已加入購物車");
-            //     }
-            //     catch(err){alert(err)}
-            // }
  
     return (<>
-            {/* <Redirect to='/login'></Redirect> */}
                   {isAdmin || <Navigate replace to="/login" />}
             <ProductModal modalMode={modalMode} productContent={productContent} isOpen={isOpen} setIsOpen={setIsOpen} setContent={setContent} getProducts={getProducts}></ProductModal>
             <DelProductModal getProducts={getProducts} productContent={productContent} isDelOpen={isDelOpen} setDelIsOpen={setDelIsOpen} setContent={setContent}></DelProductModal>
@@ -117,7 +103,7 @@ function BackEndPage(){
             <th scope="col">原價</th>
             <th scope="col">售價</th>
             <th scope="col">是否啟用</th>
-            {/* <th scope="col" style={{display:`${isBackEnd.displayFront}`}}>查看細節</th> */}
+
             </tr>
             </thead>
             <tbody>
@@ -127,8 +113,6 @@ function BackEndPage(){
             <td>{item.origin_price}</td>
             <td>{item.price}</td>
             <td>{item.is_enabled ? <span className='text-success'>已啟用</span>: <span>未啟用</span>}</td>
-            {/* <td><button className='btn btn-primary btn-sm' onClick={()=>setDetail(item)} style={{display:`${isBackEnd.displayFront}`}}>查看細節</button></td> */}
-            {/* <td><button className='btn btn-warning btn-sm' onClick={()=>addCart(item)}>加入購物車</button></td> */}
             <div className="btn-group">
             <button className='btn btn-primary btn-sm'onClick={function() {
                 handleOpenProductModal('edit',item);
@@ -139,10 +123,6 @@ function BackEndPage(){
             </table>
             <Pagination pageStatus={pageStatus} changePage={changePage}></Pagination>
             </div>
-            {/* <div className='col col-4'>         
-            <h1 className='fw-bold'>單一產品細節</h1>
-                {productDetail ? <ProductPage productDetail={productDetail} function={addCart}></ProductPage> : <span className='text-muted'>請點選欲觀看產品之細節</span>}
-                </div>       */}
                 {isLoading && <div className='d-flex justify-content-center align-items-center'
                                 style={{backgroundColor:'rgba(205, 233, 202, 0.4)',position:'fixed',top:0,left:0,right:0,bottom:0}}>
                                 <ReactLoading type={'spin'} color={'#000'} height={'3rem'} width={'3rem'} />

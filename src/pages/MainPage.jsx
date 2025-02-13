@@ -46,17 +46,6 @@ function MainPage(props) {
     }
     catch(err){alert(err)}
 }
-  
-  //箭頭函式寫法
-  // const loginCheck = async() =>{
-  //   try{
-  //     await axios.post(`${import.meta.env.VITE_BASE_URL}/v2/api/user/check`)
-  //     alert('已登入')
-  //   }catch(err) {
-  //     alert(err.message)
-  //     setIsAdmin(false)
-  //   }
-  // }
 
   //初始化時將資料傳入
     useEffect(()=>{
