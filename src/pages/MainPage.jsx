@@ -17,7 +17,8 @@ function MainPage(props) {
   async function getProducts(page=1) {
     setIsLoading(true)
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/admin/products?page=${page}`);
+      const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/products?page=${page}`);
+      console.log(res.data)
       setProducts(res.data.products);
       setPageStatus(res.data.pagination);
     } catch (err) {
