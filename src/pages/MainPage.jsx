@@ -164,7 +164,7 @@ function MainPage(props) {
               <TopBar backEnd={backEnd} isBackEnd={isBackEnd} toCartPage={toCartPage}></TopBar>
               <ProductModal modalMode={modalMode} productContent={productContent} isOpen={isOpen} setIsOpen={setIsOpen} setContent={setContent} getProducts={getProducts}></ProductModal>
               <DelProductModal getProducts={getProducts} productContent={productContent} isDelOpen={isDelOpen} setDelIsOpen={setDelIsOpen} setContent={setContent}></DelProductModal>
-              {isCart ? <CartPage isLoading={isLoading} setIsLoading={setIsLoading}></CartPage> : 
+              {/* {isCart ? <CartPage isLoading={isLoading} setIsLoading={setIsLoading}></CartPage> :  */}
            <>
            {/* <button className='btn btn-success mb-3 me-2' onClick={backEnd}>{isBackEnd.status ? '產品頁面' : '後台頁面'}</button> */}
             {/* <button className='btn btn-danger mb-3' onClick={loginCheck}>檢查登入狀態</button> */}
@@ -209,7 +209,8 @@ function MainPage(props) {
                         style={{backgroundColor:'rgba(205, 233, 202, 0.4)',position:'fixed',top:0,left:0,right:0,bottom:0}}>
                         <ReactLoading type={'spin'} color={'#000'} height={'3rem'} width={'3rem'} />
                         </div>}
-          </div></>}
+          </div></>
+          {/* } */}
     </>
   )
 }
