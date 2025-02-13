@@ -4,6 +4,8 @@ import Pagination from '../components/Pagination';
 import ProductModal from '../components/ProductModal';
 import DelProductModal from '../components/DelProductModal';
 import ReactLoading from 'react-loading';
+// import {Redirect} from 'react-router-dom';
+import {Navigate} from 'react-router-dom';
 function BackEndPage(){
       const [products, setProducts] = useState([]);
       const [modalMode, setModalMode]=useState(null);
@@ -11,6 +13,7 @@ function BackEndPage(){
       const [isDelOpen,setDelIsOpen]=useState(false);
       const [pageStatus, setPageStatus] = useState({});
       const [isLoading,setIsLoading]=useState(true);
+      const [isAdmin,setIsAdmin]=useState(true);
 
       const defaultModalState = {
         imageUrl: "",
@@ -72,6 +75,19 @@ function BackEndPage(){
                 getProducts(nowPage);
             }
 
+            // 登入驗證，若已經登入的話，token有效時，不用二次登入，同時也可以用getProducts帶入產品資料
+            async function loginCheck(){
+              try{
+                await axios.post(`${import.meta.env.VITE_BASE_URL}/v2/api/user/check`);
+                setIsAdmin(true);
+              } catch(err) {
+                setIsAdmin(false);
+              }
+            };
+            useEffect(()=>{
+              loginCheck();
+            },[])
+
             // async function addCart(item){
             //     try {
             //       await axios.post(`${import.meta.env.VITE_BASE_URL}/v2/api/${import.meta.env.VITE_API_PATH}/cart`,{
@@ -86,6 +102,8 @@ function BackEndPage(){
             // }
  
     return (<>
+            {/* <Redirect to='/login'></Redirect> */}
+                  {isAdmin || <Navigate replace to="/login" />}
             <ProductModal modalMode={modalMode} productContent={productContent} isOpen={isOpen} setIsOpen={setIsOpen} setContent={setContent} getProducts={getProducts}></ProductModal>
             <DelProductModal getProducts={getProducts} productContent={productContent} isDelOpen={isDelOpen} setDelIsOpen={setDelIsOpen} setContent={setContent}></DelProductModal>
                 <div className="row">
